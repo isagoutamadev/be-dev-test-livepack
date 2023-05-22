@@ -1,7 +1,6 @@
 import Controller from '@/utils/interfaces/controller.interface';
 import { NextFunction, Router, Request, Response } from 'express';
 import response from '@/helpers/response.helper';
-import { ResponseCode } from '@/utils/responses/global.response';
 import { LoginSchema } from '@/schemas/auth.schema';
 import { validate, ReqType } from '@/middlewares/validate.middleware';
 import { AuthService } from '@/resources/auth/auth.service';

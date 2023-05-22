@@ -6,7 +6,6 @@ export class AuthRepository {
         try {
             const select = [
                 "user.id",
-                "user.uuid",
                 "user.username",
                 "user.password",
             ];
@@ -19,10 +18,6 @@ export class AuthRepository {
 
             if (search.id) {
                 query.where("user.id", search.id);
-            }
-
-            if (search.uuid) {
-                query.where("user.uuid", search.uuid);
             }
             
             if (search.username) {
