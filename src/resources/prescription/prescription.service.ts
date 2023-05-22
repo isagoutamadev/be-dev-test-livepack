@@ -4,6 +4,7 @@ import { PrescriptionRepository } from "./prescription.repository";
 import HttpException from "@/utils/exceptions/http.exception";
 import { ResponseCode } from "@/utils/responses/global.response";
 import { v4 as uuid } from "uuid";
+import { User } from "@/models/user.model";
 
 export class PrescriptionService {
     private repository = new PrescriptionRepository();
@@ -31,11 +32,42 @@ export class PrescriptionService {
         }
     }
     
-    public create = async (data: Prescription): Promise<Prescription> => {
+    public create = async (data: Prescription, auth: User): Promise<Prescription> => {
         try {            
             await this.repository.create(data);
+            data.created_by = auth.id;
 
             return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    public confirm = async (id: number, auth: User): Promise<Prescription> => {
+        try {
+            const detail = await this.find({id: id});
+            detail.updated_by = auth.id;
+
+            detail.status = "confirmed";
+
+            await this.repository.update(detail);
+
+            return detail;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    public cancel = async (id: number, auth: User): Promise<Prescription> => {
+        try {            
+            const detail = await this.find({id: id});
+            detail.updated_by = auth.id;
+
+            detail.status = "canceled";
+
+            await this.repository.update(detail);
+
+            return detail;
         } catch (error) {
             throw error;
         }

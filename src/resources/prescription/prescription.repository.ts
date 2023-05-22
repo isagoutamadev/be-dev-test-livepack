@@ -11,6 +11,7 @@ export class PrescriptionRepository {
                 "prescription.pharmacy",
                 "prescription.doctor",
                 "prescription.total_price",
+                "prescription.status",
             ];
 
             const query = knex("m_prescriptions as prescription").select(select);
@@ -34,6 +35,7 @@ export class PrescriptionRepository {
                 "prescription.pharmacy",
                 "prescription.doctor",
                 "prescription.total_price",
+                "prescription.status",
             ];
 
             const query = knex("m_prescriptions as prescription").select(select);
@@ -53,6 +55,14 @@ export class PrescriptionRepository {
     async create(data: Prescription): Promise<void> {
         try {
             await knex("m_prescriptions").insert(data);
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    async update(data: Prescription): Promise<void> {
+        try {
+            await knex("m_prescriptions").update(data).where("id", data.id);
         } catch (error) {
             throw error;
         }

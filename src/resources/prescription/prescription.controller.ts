@@ -64,7 +64,8 @@ export class PrescriptionController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            const result = await this.service.create(req.body as any);
+            const { auth } = req.app.locals;
+            const result = await this.service.create(req.body as any, auth);
 
             return response.ok(result, res);
         } catch (err: any) {

@@ -5,6 +5,8 @@ export interface Prescription {
     doctor: string,
     total_price: number,
     status: string,
+    created_by?: number,
+    updated_by?: number,
 }
 
 export interface SearchPrescription {
