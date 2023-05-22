@@ -12,11 +12,14 @@ export class ProductService {
             const redisResult = await this.repository.getRedis(search);
             
             if (redisResult.datas.length > 0) {
-                console.log({redisResult});
                 return redisResult;  
             }
 
             const result = await this.repository.get(search);
+
+            if (redisResult.datas.length === 0 && result.datas.length === 0) {
+                return result;
+            }
 
             await this.repository.setRedis(result.datas);
 
@@ -27,7 +30,7 @@ export class ProductService {
     }
     
     public find = async (search: SearchProduct): Promise<Product> => {
-        try {            
+        try {  
             const result = await this.repository.find(search);
 
             if (result) {

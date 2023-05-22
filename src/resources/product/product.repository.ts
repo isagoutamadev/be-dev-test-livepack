@@ -9,16 +9,18 @@ export class ProductRepository {
             const redisData = await redisClient.get("products") as any as string;
             let datas = [] as Product[];
             if (redisData) {
-                datas = JSON.parse(redisData) as Product[];
+                if (redisData != '') {
+                    if (search.name) {
+                        // @ts-ignore
+                        datas = datas.filter(item => item.name.toLocaleLowerCase().includes(search.name?.toLocaleLowerCase()));
+                    }
+                    if (search.sku) {
+                        // @ts-ignore
+                        datas = datas.filter(item => item.sku.toLocaleLowerCase().includes(search.sku?.toLocaleLowerCase()));
+                    }
+                    datas = JSON.parse(redisData) as Product[];
+                }
 
-                if (search.name) {
-                    // @ts-ignore
-                    datas = datas.filter(item => item.name.toLocaleLowerCase().includes(search.name?.toLocaleLowerCase()));
-                }
-                if (search.sku) {
-                    // @ts-ignore
-                    datas = datas.filter(item => item.sku.toLocaleLowerCase().includes(search.sku?.toLocaleLowerCase()));
-                }
             }
             
             const pagination = new Pagination<Product>(
@@ -31,9 +33,9 @@ export class ProductRepository {
         }
     }
     
-    async setRedis(datas: Product[]): Promise<void> {
+    async setRedis(datas?: Product[]): Promise<void> {
         try {
-            await redisClient.set("products", JSON.stringify(datas));
+            await redisClient.set("products", datas ? JSON.stringify(datas) : '');
         } catch (error) {
             throw error;
         }
@@ -45,6 +47,7 @@ export class ProductRepository {
                 "product.id",
                 "product.sku",
                 "product.name",
+                "product.stock",
                 "product.price_configuration_id",
                 "product.price",
                 "product.tax_included",
