@@ -7,20 +7,23 @@ export class ProductRepository {
     async getRedis(search: SearchProduct): Promise<Paging<Product>> {
         try {
             const redisData = await redisClient.get("products") as any as string;
+            
             let datas = [] as Product[];
             if (redisData) {
                 if (redisData != '') {
+                    datas = JSON.parse(redisData) as Product[];
                     if (search.name) {
+                        console.log({search});
                         // @ts-ignore
                         datas = datas.filter(item => item.name.toLocaleLowerCase().includes(search.name?.toLocaleLowerCase()));
                     }
+                    
                     if (search.sku) {
                         // @ts-ignore
                         datas = datas.filter(item => item.sku.toLocaleLowerCase().includes(search.sku?.toLocaleLowerCase()));
                     }
-                    datas = JSON.parse(redisData) as Product[];
-                }
 
+                }
             }
             
             const pagination = new Pagination<Product>(
