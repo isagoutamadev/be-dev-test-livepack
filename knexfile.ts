@@ -7,7 +7,7 @@ import path from "path";
 // Update with your config settings.
 
 const config: Knex.Config = {
-    client: 'mysql',
+    client: process.env.DATABASE_CLIENT,
     connection: {
         host: process.env.DATABASE_HOST,
         port: Number(process.env.DATABASE_PORT),

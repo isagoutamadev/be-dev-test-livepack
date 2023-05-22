@@ -2,7 +2,8 @@
 
 ## Requirement
 - Install yarn
-- Database MySQL
+- Database Postgre SQL
+- Redis (docker compose provided in compose folder)
 
 ## Installation
 
