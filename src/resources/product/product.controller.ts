@@ -40,8 +40,6 @@ export class ProductController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            const search = req.query as any as Product;
-
             const result = await this.service.get(req.query);
 
             return response.ok(result, res);
