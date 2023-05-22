@@ -6,11 +6,21 @@ import { ResponseCode } from "@/utils/responses/global.response";
 
 export class ProductService {
     private repository = new ProductRepository();
+
     public get = async (search: SearchProduct): Promise<Paging<Product>> => {
-        try {            
+        try {
+            const redisResult = await this.repository.getRedis(search);
+            
+            if (redisResult.datas.length > 0) {
+                console.log({redisResult});
+                return redisResult;  
+            }
+
             const result = await this.repository.get(search);
 
-            return result;
+            await this.repository.setRedis(result.datas);
+
+            return await this.get(search);
         } catch (error) {
             throw error;
         }

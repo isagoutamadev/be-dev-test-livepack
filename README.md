@@ -3,7 +3,7 @@
 ## Requirement
 - Install yarn
 - Database Postgre SQL
-- Redis (docker compose provided in compose folder)
+- Redis without password (docker compose provided in compose folder)
 
 ## Installation
 
