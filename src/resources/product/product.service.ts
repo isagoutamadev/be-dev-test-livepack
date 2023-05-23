@@ -7,32 +7,11 @@ import { ResponseCode } from "@/utils/responses/global.response";
 export class ProductService {
     private repository = new ProductRepository();
 
-    private calculateRealPrice(product: Product): number {
-        let price = Number(product.price);
-
-        if (product.price_configuration_id === 1) {
-            price = product.price * 0.1 + product.price;
-        }
-        
-        if (!product.task_included) {
-            price = price * 0.11 + price;
-        }
-
-        return price;
-    }
-
     public get = async (search: SearchProduct, requestTime: number): Promise<Paging<Product>> => {
         try {
             const redisResult = await this.repository.getRedis(search);
             
             if (redisResult.datas.length > 0) {
-                redisResult.datas = redisResult.datas.map(item => {
-
-                    item.real_price = this.calculateRealPrice(item);
-
-                    return item;
-                });
-
                 return redisResult;
             }
 
