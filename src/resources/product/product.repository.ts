@@ -90,6 +90,7 @@ export class ProductRepository {
                 "product.name",
                 "product.price_configuration_id",
                 "product.price",
+                "product.stock",
                 "product.tax_included",
             ];
 
