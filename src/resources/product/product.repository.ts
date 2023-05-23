@@ -2,6 +2,7 @@ import { Product, SearchProduct } from "@/models/product.model";
 import knex from "@/utils/knex/knex"
 import { Pagination, Paging } from "@/utils/responses/pagination.response";
 import redisClient from "@/utils/redis/redis";
+import ProductHelper from "@/helpers/product.helper";
 
 export class ProductRepository {
     async getRedis(search: SearchProduct): Promise<Paging<Product>> {
@@ -22,7 +23,10 @@ export class ProductRepository {
                         // @ts-ignore
                         datas = datas.filter(item => item.sku.toLocaleLowerCase().includes(search.sku?.toLocaleLowerCase()));
                     }
-
+                    datas = datas.map(item => {
+                        item.final_price = ProductHelper.calculateFinalPricePerProduct(item);
+                        return item;
+                    });
                 }
             }
             

@@ -1,3 +1,5 @@
+import { Product } from "./product.model";
+
 export interface Prescription {
     id: number,
     patient_name: string,
@@ -7,6 +9,7 @@ export interface Prescription {
     status: string,
     created_by?: number,
     updated_by?: number,
+    products: Product[]
 }
 
 export interface SearchPrescription {

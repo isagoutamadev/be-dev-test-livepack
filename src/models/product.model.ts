@@ -5,7 +5,8 @@ export interface Product {
     stock: number,
     price_configuration_id: number,
     price: number,
-    real_price?: number,
+    final_price?: number,
+    qty?: number,
     task_included: boolean,
 }
 

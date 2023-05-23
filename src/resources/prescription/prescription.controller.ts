@@ -11,11 +11,13 @@ import { PrescriptionService } from './prescription.service';
 import { Paging } from '@/utils/responses/pagination.response';
 import { PagingSchema } from '@/schemas/paging.schema';
 import { IDSchema } from '@/schemas/global.schema';
+import { PrescriptionProductController } from '../prescription-product/prescription-product.controller';
 
 export class PrescriptionController implements Controller {
     public path = 'prescriptions';
     public router = Router();
     private service = new PrescriptionService();
+    private prescriptionProductController = new PrescriptionProductController();
 
     constructor() {
         this.initRoutes();
@@ -42,6 +44,11 @@ export class PrescriptionController implements Controller {
             validate(IDSchema, ReqType.PARAMS),
             this.detail
         );
+        
+        this.router.use(
+            '/:prescription_id/products',
+            this.prescriptionProductController.router
+        );
     }
 
     private get = async (
@@ -64,10 +71,10 @@ export class PrescriptionController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            const { auth } = req.app.locals;
+            const { auth } = res.app.locals;
             const result = await this.service.create(req.body as any, auth);
 
-            return response.ok(result, res);
+            return response.created(result, res);
         } catch (err: any) {
             return next(new HttpException(err.message, err.statusCode));
         }

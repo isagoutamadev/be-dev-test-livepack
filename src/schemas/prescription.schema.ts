@@ -5,3 +5,8 @@ export const PrescriptionSchema = Joi.object({
     pharmacy: Joi.string().min(3).max(30).required(),
     doctor: Joi.string().min(3).max(30).required(),
 });
+
+export const PrescriptionParamsSchema = Joi.object({
+    prescription_id: Joi.number().min(1).required(),
+    product_id: Joi.number().min(1).required(),
+});
