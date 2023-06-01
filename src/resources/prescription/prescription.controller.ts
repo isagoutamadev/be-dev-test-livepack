@@ -46,7 +46,7 @@ export class PrescriptionController implements Controller {
         );
         
         this.router.use(
-            '/:prescription_id/products',
+            `/:prescription_id/${this.prescriptionProductController.path}`,
             this.prescriptionProductController.router
         );
     }

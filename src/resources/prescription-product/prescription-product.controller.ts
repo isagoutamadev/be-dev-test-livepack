@@ -14,7 +14,7 @@ import { ProductIDSchema } from '@/schemas/product.schema';
 import { PrescriptionParamsSchema } from '@/schemas/prescription.schema';
 
 export class PrescriptionProductController implements Controller {
-    public path = '/';
+    public path = '/products';
     public router = Router({mergeParams: true});
     private service = new PrescriptionProductService();
 
